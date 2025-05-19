@@ -1,0 +1,16 @@
+.local
+tmp
+cover.html
+cover.out
+build/dist
+.gitconfig
+.vscode
+.localstack
+*.log
+*.err
+dba_release
+baitorufree-db-free-db-sql
+.DS_Store
+baitorufree-free-app-backend-api-doc
+build/minio/data/.minio.sys
+.env.private.local
