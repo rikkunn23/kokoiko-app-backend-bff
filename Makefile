@@ -10,72 +10,70 @@ INTERFACES = $(shell arc= $(EXEC_T_APP) find -name "interface.go" )
 GO_VER = 1.23
 
 init-env:
-  @cp -p ./deploy/env/.env.local ./deploy/env/.env.private.local
+	@cp -p ./deploy/env/.env.local ./deploy/env/.env.private.local
 
 init-doc:
-  @make init-docb br=main
+	@make init-docb br=main
 
 init-docb:
-  rm -rf ./baitorufree-free-app-backend-api-doc
-  git clone -b $(br) https://github.com/rikkunn23/kokoiko-app-backend-api-doc.git
-  chmod -R 755 ./kokoiko-app-backend-api-doc
+	rm -rf ./baitorufree-free-app-backend-api-doc
+	git clone -b $(br) https://github.com/rikkunn23/kokoiko-app-backend-api-doc.git
+	chmod -R 755 ./kokoiko-app-backend-api-doc
 
 up:
-  @docker compose up -d
-# CIでのみ使用
+	@docker compose up -d
 
 up-test:
-  @make create-network
-  @docker compose up -d app-test postgres-test localstack
-  @make wait-test-postgres
+	@make create-network
+	@docker compose up -d app-test postgres-test localstack
+	@make wait-test-postgres
 
 c-up:
-  @rm -rf ./.localstack
-  @docker compose up -d --build
+	@rm -rf ./.localstack
+	@docker compose up -d --build
 
 down:
-  @docker compose down
+	@docker compose down
 
 ps:
-  @docker compose ps
+	@docker compose ps
 
 tidy:
-  @$(EXEC_T_APP) go mod tidy -go=${GO_VER}
+	@$(EXEC_T_APP) go mod tidy -go=${GO_VER}
 
 pretest:
-  @$(EXEC_T_APP_TEST) golangci-lint run --timeout 10m
-  @$(EXEC_T_APP_TEST) sh ./build/format-check.sh
+	@$(EXEC_T_APP_TEST) golangci-lint run --timeout 10m
+	@$(EXEC_T_APP_TEST) sh ./build/format-check.sh
 
 test:
-  @$(EXEC_T_APP_TEST) go test ./... -v -count=1 -coverprofile=cover.out ./...
-  @$(EXEC_T_APP_TEST) go tool cover -html=cover.out -o cover.html
+	@$(EXEC_T_APP_TEST) go test ./... -v -count=1 -coverprofile=cover.out ./...
+	@$(EXEC_T_APP_TEST) go tool cover -html=cover.out -o cover.html
 
 gen-api:
-  ./tools/swagger/codegen.sh ${TAGS}
+	./tools/swagger/codegen.sh ${TAGS}
 
 gen-ms-user:
-  ./tools/swagger/codegen_ms.sh "user"
+	./tools/swagger/codegen_ms.sh "user"
 
 gen-ms-job:
-  ./tools/swagger/codegen_ms.sh "job"
+	./tools/swagger/codegen_ms.sh "job"
 
 gen-api-all:
-  @make gen-api
-  @make gen-ms-user
-  @make gen-ms-job
+	@make gen-api
+	@make gen-ms-user
+	@make gen-ms-job
 
 gen-mock:
-  @$(foreach src,$(INTERFACES), docker compose exec app bash tools/mockgen/codegen.sh ${src} || exit;)
+	@$(foreach src,$(INTERFACES), docker compose exec app bash tools/mockgen/codegen.sh ${src} || exit;)
 
 enter-app:
-  @$(EXEC_APP) bash
+	@$(EXEC_APP) bash
 
 e2e:
-  @$(EXEC_APP_TEST) runn run tools/runn/e2e.yaml
+	@$(EXEC_APP_TEST) runn run tools/runn/e2e.yaml
 
 wait-test-postgres:
-  @sh ./build/postgres/wait_for_postgres.sh -n postgres-test
-# 初回起動時などネットワークが存在しない場合は作成する
+	@sh ./build/postgres/wait_for_postgres.sh -n postgres-test
 
 create-network:
-  @docker network create external
+	@docker network create external
