@@ -1,6 +1,6 @@
 .PHONY: build
 # 機能カテゴリが増えたら半角空白区切りでTAGSに追加する。
-TAGS := "job master user entry work auth identification"
+TAGS := "master"
 EXEC_APP := docker compose exec app
 EXEC_APP_TEST := docker compose exec app-test
 EXEC_T_APP := docker compose exec -T app
@@ -53,6 +53,7 @@ test:
 	@$(EXEC_T_APP_TEST) go tool cover -html=cover.out -o cover.html
 
 gen-api:
+	chmod +x ./tools/swagger/codegen.sh
 	./tools/swagger/codegen.sh ${TAGS}
 
 gen-ms-user:
