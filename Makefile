@@ -9,6 +9,9 @@ PKGS = $(shell arc= $(EXEC_T_APP) go list ./... | grep -v vendor )
 INTERFACES = $(shell arc= $(EXEC_T_APP) find -name "interface.go" )
 GO_VER = 1.23
 
+create-network:
+	@docker network create external
+
 init-env:
 	@cp -p ./deploy/env/.env.local ./deploy/env/.env.private.local
 
@@ -74,6 +77,3 @@ e2e:
 
 wait-test-postgres:
 	@sh ./build/postgres/wait_for_postgres.sh -n postgres-test
-
-create-network:
-	@docker network create external
