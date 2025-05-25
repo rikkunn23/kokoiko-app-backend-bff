@@ -19,7 +19,7 @@ init-doc:
 	@make init-docb br=main
 
 init-docb:
-	rm -rf ./baitorufree-free-app-backend-api-doc
+	rm -rf ./kokoiko-app-backend-api-doc
 	git clone -b $(br) https://github.com/rikkunn23/kokoiko-app-backend-api-doc.git
 	chmod -R 755 ./kokoiko-app-backend-api-doc
 
