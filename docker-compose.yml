@@ -1,0 +1,112 @@
+services:
+  app:
+    container_name: app
+    build:
+      context: ./build/
+      dockerfile: ./app/Dockerfile
+    env_file:
+      - ./deploy/env/.env.private.local
+    volumes:
+      - ./:/go/src/github.com/rikkunn23/kokoiko-app-backend-bff
+    ports:
+      - 8080:8080
+    networks:
+      - external
+  app-test:
+    container_name: app-test
+    build:
+      context: ./build/
+      dockerfile: ./app/DockerfileTest
+    env_file:
+      - ./deploy/env/.env.test
+    volumes:
+      - ./:/go/src/github.com/rikkunn23/kokoiko-app-backend-bff
+    networks:
+      - external
+
+  postgres:
+    container_name: postgres
+    build:
+      context: ./build/postgres
+      dockerfile: Dockerfile
+    environment:
+      - POSTGRES_DB=kokoiko
+      - POSTGRES_USER=kokoiko_admin
+      - POSTGRES_PASSWORD=password123
+      - EXEC_SQL_ENVIRONMENT=local
+      - EXEC_SQL_NODATABASE=1
+      - DB_PASSWD=password123
+    volumes:
+      - ./build/postgres:/postgres
+    ports:
+      - "15432:5432"
+    networks:
+      - external
+
+  postgres-test:
+    container_name: postgres-test
+    build:
+      context: ./build/postgres
+      dockerfile: Dockerfile
+    environment:
+      - POSTGRES_DB=kokoiko
+      - POSTGRES_USER=kokoiko_admin
+      - POSTGRES_PASSWORD=password123
+      - EXEC_SQL_ENVIRONMENT=local
+      - EXEC_SQL_NODATABASE=1
+      - DB_PASSWD=password123
+    volumes:
+      - ./build/postgres:/postgres
+    ports:
+      - "25432:5432"
+    networks:
+      - external
+
+  # minio:
+  #   container_name: minio
+  #   build:
+  #     context: ./build/minio
+  #     dockerfile: Dockerfile
+  #   volumes:
+  #     - ./build/minio/data:/data
+  #   ports:
+  #     - 9999:9000
+  #     - 9090:9090
+  #   environment:
+  #     MINIO_ROOT_USER: admin
+  #     MINIO_ROOT_PASSWORD: password
+  #   command: server /data --console-address ":9090"
+
+  # localstack:
+  #   container_name: localstack
+  #   build:
+  #     context: ./build/localstack
+  #     dockerfile: Dockerfile
+  #   env_file:
+  #     - ./deploy/env/.env.private.local
+  #   ports:
+  #     - "127.0.0.1:4566:4566"            # LocalStack Gateway
+  #     - "127.0.0.1:4510-4559:4510-4559"  # external services port range
+  #   environment:
+  #     # LocalStack configuration: https://docs.localstack.cloud/references/configuration/
+  #     - DEBUG=${DEBUG:-0}
+  #   volumes:
+  #     - ./.localstack:/var/lib/localstack
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #     - ./create-local-queue.sh:/etc/localstack/init/ready.d/create-local-queue.sh
+
+  # json-server:
+  #   container_name: json-server
+  #   build:
+  #     context: ./build/jsonserver
+  #     dockerfile: Dockerfile
+  #   volumes:
+  #     - ./build/jsonserver:/data
+  #   ports:
+  #     - 3000:3000
+  #   networks:
+  #     - external
+
+networks:
+  external:
+    external: true
