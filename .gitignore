@@ -9,8 +9,8 @@ build/dist
 *.log
 *.err
 dba_release
-baitorufree-db-free-db-sql
 .DS_Store
-baitorufree-free-app-backend-api-doc
+kokoiko-app-backend-api-doc
 build/minio/data/.minio.sys
 .env.private.local
+.copilot
