@@ -1,7 +1,9 @@
 package config
 
 import (
+	"log/slog"
 	"os"
+	"strings"
 
 	"github.com/caarlos0/env"
 )
@@ -56,4 +58,23 @@ func NewConfig()error{
 		HTTPClient: &HTTPClientConfig{},
 }
 return env.Parse(conf)
+}
+
+
+
+// SlogLevel ...
+func SlogLevel() slog.Level {
+	// Unicode文字列の小文字化を行ってcaseで比較する
+	switch strings.ToLower(conf.App.LogLevel) {
+	case "debug":
+		return slog.LevelDebug
+	case "info":
+		return slog.LevelInfo
+	case "warn":
+		return slog.LevelWarn
+	case "error":
+		return slog.LevelError
+	default:
+		return slog.LevelInfo
+	}
 }

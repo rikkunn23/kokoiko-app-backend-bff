@@ -7,6 +7,7 @@ import (
 
 	"github.com/rikkunn23/kokoiko-app-backend-bff/config"
 	"github.com/rikkunn23/kokoiko-app-backend-bff/internal/router"
+	"github.com/rikkunn23/kokoiko-app-backend-bff/pkg/wslog"
 )
 func main() {
 
@@ -15,10 +16,12 @@ func main() {
   if err != nil {
     log.Fatalf("failed to init config: %v", err)
   }
-  // wslog.New(true, config.SlogLevel())
-  // if err != nil {
-  //   log.Fatalf("failed to create aws config: %v", err)
-  // }
+
+	// ロガーの初期化をここでしないとログが出力されない
+  wslog.New(true, config.SlogLevel())
+  if err != nil {
+    log.Fatalf("failed to create aws config: %v", err)
+  }
 
   // if err := newrelic.Initialize(); err != nil {
   //   log.Fatalf("failed to init newrelic: %v\n", err)
