@@ -1,0 +1,16 @@
+.local
+tmp
+cover.html
+cover.out
+build/dist
+.gitconfig
+.vscode
+.localstack
+*.log
+*.err
+dba_release
+.DS_Store
+kokoiko-app-backend-api-doc
+build/minio/data/.minio.sys
+.env.private.local
+.copilot

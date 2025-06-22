@@ -1,0 +1,34 @@
+
+name: Go Lint and Format
+
+on:
+  push:
+    branches: [ develop, staging*, prod ]
+  pull_request:
+    branches: [ main, feature/*, SBW* ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: init
+        run: |
+          make init-env
+
+      - name: Change owner
+        run: |
+          sudo chown -R root:root $GITHUB_WORKSPACE
+
+      - name: Setup
+        run: |
+          make up-test
+          make ps
+
+      - name: Lint and FormatCheck
+        run: make pretest
+
+      - name: Test
+        run: |
+          make test
