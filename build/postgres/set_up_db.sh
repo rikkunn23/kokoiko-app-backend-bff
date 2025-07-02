@@ -15,8 +15,12 @@ psql -h localhost -p 5432 -U postgres -d postgres -c "CREATE DATABASE kokoiko OW
 dirs=(
     "ddl/init/roles"
     "ddl/init/schemas"
+    "ddl/create/user/parent/"
+    "ddl/create/user/child"
     "ddl/create/master"
     "seed/master"
+    # "seed/user/parent/"
+    # "seed/user/child"
 )
 for dir in ${dirs[@]}; do
     echo $dir"を実行";
