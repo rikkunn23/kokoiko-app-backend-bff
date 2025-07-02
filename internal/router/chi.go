@@ -9,11 +9,18 @@ import (
 	"github.com/go-chi/render"
 	"github.com/rikkunn23/kokoiko-app-backend-bff/config"
 	"github.com/rikkunn23/kokoiko-app-backend-bff/gen/api/master"
+	"github.com/rikkunn23/kokoiko-app-backend-bff/gen/api/user"
 	mastercnt "github.com/rikkunn23/kokoiko-app-backend-bff/internal/controller/master"
+
+	usercnt "github.com/rikkunn23/kokoiko-app-backend-bff/internal/controller/user"
 	masterrepo "github.com/rikkunn23/kokoiko-app-backend-bff/internal/domain/master/repository"
 	masterquery "github.com/rikkunn23/kokoiko-app-backend-bff/internal/domain/master/repository/query"
+
+	userrepo "github.com/rikkunn23/kokoiko-app-backend-bff/internal/domain/user/repository"
+	userquery "github.com/rikkunn23/kokoiko-app-backend-bff/internal/domain/user/repository/query"
 	"github.com/rikkunn23/kokoiko-app-backend-bff/internal/postgres"
 	masteruse "github.com/rikkunn23/kokoiko-app-backend-bff/internal/usecase/master"
+	useruse "github.com/rikkunn23/kokoiko-app-backend-bff/internal/usecase/user"
 )
 
 // CreateServiceRouter uses for production
@@ -50,7 +57,11 @@ func applyRoutes(r *chi.Mux) {
 
 	// マスター取得API
 	master.HandlerFromMux(mastercnt.New(masteruse.New(masterrepo.New(scli, masterquery.New()))) ,r)
+
+	// user取得API
+	user.HandlerFromMux(usercnt.New(useruse.New(userrepo.New(scli, userquery.New()))), r)
 }
+
 func healthCheckHandler(w http.ResponseWriter, _ *http.Request) {
   w.WriteHeader(http.StatusOK)
   _, _ = w.Write([]byte("OK"))
