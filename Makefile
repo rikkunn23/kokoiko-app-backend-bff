@@ -1,6 +1,6 @@
 .PHONY: build
 # 機能カテゴリが増えたら半角空白区切りでTAGSに追加する。
-TAGS := "master"
+TAGS := "master user"
 EXEC_APP := docker compose exec app
 EXEC_APP_TEST := docker compose exec app-test
 EXEC_T_APP := docker compose exec -T app
