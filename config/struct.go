@@ -12,11 +12,12 @@ type AppConfig struct {
   TimeZone        string `env:"TZ"`
   HealthCheckPath string `env:"GO_HEALTHCHECK_PATH"`
   Name            string `env:"GO_APP_NAME"`
-  RecApp          string `env:"BAITORUFREE_REC_APP"`
-  RecAcnt         string `env:"BAITORUFREE_REC_ACNT"`
-  UpdApp          string `env:"BAITORUFREE_UPD_APP"`
-  UpdAcnt         string `env:"BAITORUFREE_REC_ACNT"`
+  RecApp          string `env:"KOKOIKO_REC_APP"`
+  RecAcnt         string `env:"KOKOIKO_REC_ACNT"`
+  UpdApp          string `env:"KOKOIKO_UPD_APP"`
+  UpdAcnt         string `env:"KOKOIKO_UPD_ACNT"`
   AgentDomain     string `env:"AGENT_DOMAIN"`
+	JWTSecret		 		string `env:"JWT_SECRET"`
 }
 
 // PostgresConfig Postgresへの接続情報
